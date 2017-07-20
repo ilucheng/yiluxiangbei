@@ -1,0 +1,9 @@
+<!--report.wxml-->
+<text>欢迎，您是第1位来看我的朋友</text>
+
+<!-- pages/todos/todos.wxml -->
+<block wx:for="{{todos}}" wx:for-item="todo" wx:key="objectId">
+  <text data-id="{{todo.objectId}}">
+    {{todo.test}}
+  </text>
+</block>
