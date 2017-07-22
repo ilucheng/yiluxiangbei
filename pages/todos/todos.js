@@ -8,6 +8,7 @@ Page({
    */
   data: {
     todos: [],
+    times: null
   },
 
   /**
@@ -21,11 +22,23 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    new AV.Query('Todo')
-      .descending('createdAt')
-      .find()
-      .then(todos => this.setData({ todos }))
+    new AV.Query('BasicVar')
+      .include('avatar') // avatar is an AV.File
+      .get('597303e2128fe155ce5e6280')
+      .then(times => this.setData({ times }))
       .catch(console.error);
+
+    var todo = AV.Object.createWithoutData('BasicVar', '597303e2128fe155ce5e6280');
+  
+    todo.save().then(function (todo) {
+      todo.increment('VisitTimes', 1);
+      todo.fetchWhenSave(true);
+      return todo.save();
+    }).then(function (todo) {
+      // 使用了 fetchWhenSave 选项，save 成功之后即可得到最新的 views 值
+    }, function (error) {
+      // 异常处理
+    });
   },
 
   /**
